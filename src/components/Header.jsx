@@ -19,7 +19,7 @@ export default function Header() {
             </svg>
           </div>
           <span className="logo-text">
-            Job<span className="gradient-text">Match</span> AI
+            Matchify <span className="gradient-text">Jobs</span>
           </span>
         </div>
 

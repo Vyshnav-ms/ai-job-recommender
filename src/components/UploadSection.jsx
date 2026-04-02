@@ -3,10 +3,8 @@ import './upload-section.css';
 
 const ACCEPTED_TYPES = [
   'application/pdf',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 ];
-const ACCEPTED_EXT = ['.pdf', '.doc', '.docx'];
+const ACCEPTED_EXT = ['.pdf'];
 
 export default function UploadSection({ onSubmit, isLoading }) {
   const [file, setFile] = useState(null);
@@ -18,7 +16,7 @@ export default function UploadSection({ onSubmit, isLoading }) {
     if (!f) return 'No file selected.';
     const ext = '.' + f.name.split('.').pop().toLowerCase();
     if (!ACCEPTED_EXT.includes(ext)) {
-      return `Unsupported file type. Please upload a PDF, DOC, or DOCX.`;
+      return `Unsupported file type. Please upload a PDF file.`;
     }
     if (f.size > 10 * 1024 * 1024) {
       return 'File too large. Max size is 10 MB.';
