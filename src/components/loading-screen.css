@@ -1,0 +1,197 @@
+.loading-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 80px);
+  padding: 40px 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.loading-card {
+  max-width: 460px;
+  width: 100%;
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+/* ── Orb ── */
+.loading-orb {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orb-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid rgba(139, 92, 246, 0.3);
+  animation: orb-spin linear infinite;
+}
+
+.ring-1 { width: 90px; height: 90px; animation-duration: 3s; border-top-color: var(--clr-primary); }
+.ring-2 { width: 68px; height: 68px; animation-duration: 2s; animation-direction: reverse; border-top-color: var(--clr-secondary); }
+.ring-3 { width: 46px; height: 46px; animation-duration: 1.5s; border-top-color: var(--clr-accent); }
+
+@keyframes orb-spin {
+  to { transform: rotate(360deg); }
+}
+
+.orb-core {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.orb-emoji {
+  display: block;
+  transition: transform 0.3s ease;
+  animation: orb-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes orb-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.2); }
+}
+
+/* ── Title ── */
+.loading-title {
+  font-size: 1.5rem;
+  color: white;
+}
+
+/* ── Step Label ── */
+.step-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: fade-in-up 0.4s ease forwards;
+}
+
+.step-text {
+  font-weight: 600;
+  color: var(--clr-primary-light);
+  font-size: 0.95rem;
+}
+
+.step-detail {
+  font-size: 0.82rem;
+}
+
+/* ── Progress Bar ── */
+.progress-bar-wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progress-bar-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--gradient-brand);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.progress-pct {
+  min-width: 38px;
+  text-align: right;
+}
+
+/* ── Steps List ── */
+.steps-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.875rem;
+  color: rgba(148, 163, 184, 0.5);
+  transition: color var(--transition-base);
+}
+
+.step-item.done {
+  color: var(--clr-success);
+}
+
+.step-item.active {
+  color: white;
+}
+
+.step-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--clr-success);
+  transition: all var(--transition-base);
+}
+
+.step-item.done .step-indicator {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.step-item.active .step-indicator {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+.dot-spinner {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--clr-primary);
+  animation: orb-pulse 0.8s ease-in-out infinite;
+}
+
+.dot-idle {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+}

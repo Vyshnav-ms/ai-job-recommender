@@ -1,0 +1,197 @@
+.results-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Header ── */
+.results-header {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.results-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.results-title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: white;
+}
+
+.results-subtitle {
+  margin-top: 6px;
+}
+
+/* ── Controls ── */
+.results-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  max-width: 360px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(148, 163, 184, 0.5);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 14px 10px 40px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  color: white;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  outline: none;
+}
+
+.search-input::placeholder { color: rgba(148, 163, 184, 0.4); }
+
+.search-input:focus {
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.filter-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-pill {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  color: rgba(148, 163, 184, 0.7);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-pill:hover {
+  border-color: rgba(139, 92, 246, 0.35);
+  color: white;
+}
+
+.filter-pill.active {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.5);
+  color: var(--clr-primary-light);
+}
+
+.sort-select {
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  color: rgba(148, 163, 184, 0.8);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.sort-select:hover { border-color: rgba(139, 92, 246, 0.35); }
+.sort-select option { background: #0b0f1e; }
+
+/* ── Summary Cards ── */
+.results-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.summary-card {
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.summary-icon {
+  font-size: 1.3rem;
+}
+
+.summary-value {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.summary-label {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── Jobs Grid ── */
+.jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  gap: 20px;
+}
+
+/* ── No Results ── */
+.no-results {
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  color: rgba(148, 163, 184, 0.7);
+}
+
+.no-results-icon {
+  font-size: 3rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .results-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .jobs-grid {
+    grid-template-columns: 1fr;
+  }
+  .filter-pills { display: none; }
+}
+
+@media (max-width: 480px) {
+  .results-summary {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .search-wrap { max-width: 100%; }
+}
