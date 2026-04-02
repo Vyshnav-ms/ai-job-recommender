@@ -109,22 +109,63 @@ export default function App() {
       formData.append('data', file);
       formData.append('filename', file.name);
 
-      const res = await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        body: formData,
-      });
+      // 60-second timeout so UI doesn't hang forever
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 60000);
+
+      let res;
+      try {
+        res = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          body: formData,
+          signal: controller.signal,
+        });
+      } catch (fetchErr) {
+        clearTimeout(timeout);
+        if (fetchErr.name === 'AbortError') {
+          throw new Error('Request timed out after 60 seconds. Is your n8n workflow activated and responding?');
+        }
+        // CORS or network error
+        throw new Error(
+          `Network error: ${fetchErr.message}. This is usually a CORS issue — make sure your n8n workflow has "Respond to Webhook" set to allow all origins.`
+        );
+      }
+      clearTimeout(timeout);
 
       if (!res.ok) {
-        throw new Error(`Server responded with ${res.status}: ${res.statusText}`);
+        const body = await res.text().catch(() => '');
+        throw new Error(`n8n responded with HTTP ${res.status} ${res.statusText}. ${body ? `Response: ${body.slice(0, 200)}` : ''}`);
       }
 
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error('n8n returned a non-JSON response. Make sure your workflow ends with a "Respond to Webhook" node that outputs JSON.');
+      }
 
-      // Support both { jobs: [...] } and a raw array
-      const jobList = Array.isArray(data) ? data : data.jobs;
+      console.log('n8n raw response:', data);
 
-      if (!Array.isArray(jobList) || jobList.length === 0) {
-        throw new Error('No jobs returned from the server. Check your n8n workflow output.');
+      // Handle multiple n8n response shapes:
+      // 1. { jobs: [...] }
+      // 2. Raw array [...]
+      // 3. [{ jobs: [...] }]  ← n8n wraps output in an array sometimes
+      // 4. { data: { jobs: [...] } }
+      let jobList =
+        Array.isArray(data) && data.length > 0 && Array.isArray(data[0]?.jobs)
+          ? data[0].jobs                          // shape 3
+          : Array.isArray(data)
+          ? data                                   // shape 2
+          : Array.isArray(data?.jobs)
+          ? data.jobs                              // shape 1
+          : Array.isArray(data?.data?.jobs)
+          ? data.data.jobs                         // shape 4
+          : null;
+
+      if (!jobList || jobList.length === 0) {
+        throw new Error(
+          `n8n returned data but no jobs were found. Raw response: ${JSON.stringify(data).slice(0, 300)}`
+        );
       }
 
       setJobs(jobList);
