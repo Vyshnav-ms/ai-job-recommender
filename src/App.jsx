@@ -4,6 +4,7 @@ import Header from './components/Header';
 import UploadSection from './components/UploadSection';
 import LoadingScreen from './components/LoadingScreen';
 import JobResults from './components/JobResults';
+import AboutSection from './components/AboutSection';
 
 // ── n8n webhook URL from env (set VITE_N8N_WEBHOOK_URL in .env) ──
 const WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL || '';
@@ -84,7 +85,7 @@ const MOCK_JOBS = [
   },
 ];
 
-const VIEW = { UPLOAD: 'upload', LOADING: 'loading', RESULTS: 'results', ERROR: 'error' };
+const VIEW = { UPLOAD: 'upload', LOADING: 'loading', RESULTS: 'results', ERROR: 'error', ABOUT: 'about' };
 
 export default function App() {
   const [view, setView] = useState(VIEW.UPLOAD);
@@ -147,10 +148,6 @@ export default function App() {
       console.log('n8n raw response:', data);
 
       // Handle multiple n8n response shapes:
-      // 1. { jobs: [...] }
-      // 2. Raw array [...]
-      // 3. [{ jobs: [...] }]  ← n8n wraps output in an array sometimes
-      // 4. { data: { jobs: [...] } }
       let jobList =
         Array.isArray(data) && data.length > 0 && Array.isArray(data[0]?.jobs)
           ? data[0].jobs                          // shape 3
@@ -185,7 +182,7 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
-      <Header />
+      <Header currentView={view} onNav={setView} />
 
       <main className="app-main" id="main-content">
         {view === VIEW.UPLOAD && (
@@ -196,6 +193,10 @@ export default function App() {
 
         {view === VIEW.RESULTS && (
           <JobResults jobs={jobs} onReset={handleReset} />
+        )}
+
+        {view === VIEW.ABOUT && (
+          <AboutSection />
         )}
 
         {view === VIEW.ERROR && (
@@ -221,8 +222,11 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <p className="text-muted text-sm">
+        <p className="text-muted text-sm" style={{ marginBottom: "0.25rem" }}>
           Built with <span style={{ color: 'var(--clr-accent)' }}>♥</span> using React + n8n AI Workflows
+        </p>
+        <p className="text-muted text-sm">
+          &copy; {new Date().getFullYear()} Matchify Jobs. All rights reserved.
         </p>
       </footer>
     </div>
