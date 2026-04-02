@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './app.css';
+import './App.css';
 import Header from './components/Header';
 import UploadSection from './components/UploadSection';
 import LoadingScreen from './components/LoadingScreen';
